@@ -11,6 +11,19 @@ function init() {
             pageNumber: 0,  // default to page 0 (first page)
             lastPage: 0,
             goToPage: "",
+            pageOptions: [{
+                value: '5',
+                label: '5',
+              }, 
+              {
+                value: '10',
+                label: '10'
+              }, 
+              {
+                value: '20',
+                label: '20'
+              }
+            ],
             pageSize: 10,    // default to 10 elements per page
             modification: false, // Enable the modification button if == true
             ajout: true,        // Disable the adding button if == false
