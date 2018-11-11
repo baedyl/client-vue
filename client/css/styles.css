@@ -1,0 +1,40 @@
+@import url("//unpkg.com/element-ui@2.4.9/lib/theme-chalk/index.css");
+/*h2 {
+    color:red;
+}
+table {
+    border-collapse: collapse;
+    
+}
+
+table, td, th {
+    border: 1px solid black;
+    padding: 5px;
+}*/
+#resto {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+#resto td, #resto th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#resto tr:nth-child(even){background-color: #f2f2f2;}
+
+#resto tr:hover {background-color: #dddd;}
+
+#resto th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.inputMargin{
+    margin-bottom: 10px;
+}

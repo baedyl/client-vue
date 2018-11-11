@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Liste de restaurants avec VueJS</title>
+
+    <script src="lib/vue.min.js"></script>
+    <script src="js/script.js"></script>
+
+    <script src="//unpkg.com/element-ui@2.4.9/lib/index.js"></script>
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <fieldset>
+                        <legend>Ajouter Restaurant:</legend>                   
+                            <el-input type="text" name="id" v-model="id" disabled class="inputMargin"></el-input>
+                        <form id="addForm">
+                            <el-input type="text" name="nom" v-model="nom" placeholder="Nom Restaurant" class="inputMargin"></el-input>
+                            <el-input type="text" name="cuisine" v-model="cuisine" placeholder="Cuisine Restaurant" class="inputMargin"></el-input>
+                            <!--<el-button type="primary" v-on:click="addRestaurant" :disabled="ajout !== true" plain class="inputMargin">Ajouter</el-button>-->
+                            <el-button type="primary" icon="el-icon-plus" v-on:click="addRestaurant" :disabled="ajout !== true" circle plain class="inputMargin"></el-button>
+                            <!--<el-button type="primary" v-on:click="modifyRestaurant" :disabled="modification !== true" plain>Modifier</el-button>-->
+                            <el-button type="primary" icon="el-icon-edit" v-on:click="modifyRestaurant" :disabled="modification !== true" circle plain></el-button>
+                            <!--<el-button type="primary" v-on:click="removeRestaurant" :disabled="modification !== true" plain>Supprimer</el-button>-->
+                            <el-button type="danger" icon="el-icon-delete" v-on:click="removeRestaurant" :disabled="modification !== true" circle></el-button>
+                            <el-button type="primary" icon="el-icon-refresh" v-on:click="clearInputs" circle plain></el-button>
+                        </form>
+                    </fieldset>
+                </div>
+            </el-col>
+            
+            <el-col :span="6">
+                <div class="grid-content bg-purple">
+                    <fieldset>
+                    <legend>Rechercher Restaurant:</legend>
+                        <el-input placeholder="Recherche par nom" prefix-icon="el-icon-search" v-model="rechercheInput" class="inputMargin">
+                        </el-input>
+                        <el-button type="primary" v-on:click="getRestaurant" plain>Rechercher</el-button>
+                    </fieldset>     
+                </div>
+                <el-alert  v-if="alerte === true" title="" type="success" style="margin-top: 10%">{{alerte_msg}}
+                </el-alert>
+            </el-col>
+            
+        </el-row>
+        
+        
+        
+        <h2>Liste des restaurants :</h2>
+       <!-- <template>
+        <el-select v-on:click="setPageSize(20)" v-model="pageSize" placeholder="Select">
+            <el-option v-for="item in pageOptions" :key="item.value" :label="item.label" :value="item.value">
+            </el-option>
+        </el-select>
+        </template>
+        -->
+        <select v-on:click="setPageSize(pageSize)" v-model="pageSize">
+            <option disabled>Page Size</option>
+            <option>5</option>
+            <option>10</option>
+            <option>15</option>
+            <option>20</option>
+        </select>
+        
+
+        <!--<template>
+        <el-table id="resto" :data="restaurants" striped style="width: 100%">
+            <el-table-column v-on:click="getRestaurant" prop="name" label="Nom">
+            </el-table-column>
+            <el-table-column prop="cuisine" label="Cuisine">
+            </el-table-column>
+            
+        </el-table>
+        </template>-->
+        <table id="resto">
+            <tr>
+                <th>Nom</th>
+                <th>Cuisine</th>
+            </tr>
+            <tr v-for="(r, index) in restaurants" v-on:click="getRestaurant(index)" v-bind:style="{color:getColor(index)}">
+                <td>{{r.name}}</td>
+                <td>{{r.cuisine}}</td>
+            </tr>
+        </table>
+        <br>
+
+        <el-row>
+            <el-col :span="2">
+                <el-button-group>
+                    <el-button :disabled="pageNumber===0" @click="getPage(0)" type="primary">
+                            First Page: 0
+                    </el-button>
+                </el-button-group>
+            </el-col>
+            <el-col :span="4">
+                <el-button-group>
+                        <!--:disabled="pageNumber==0-->
+                    <el-button :disabled="pageNumber === 0" @click="prevPage" type="primary" icon="el-icon-arrow-left">
+                        Prev Page
+                    </el-button>
+                </el-button-group>
+            </el-col>
+            <el-col :span="4">
+                <el-button-group>
+                    <el-button :disabled="true" type="primary">
+                            Curr Page: {{pageNumber}}
+                    </el-button>
+                </el-button-group>
+            </el-col>
+            <el-col :span="2">
+                <el-button-group>
+                    <el-button :disabled="pageNumber === lastPage" @click="nextPage" type="primary" >
+                        Next Page <i class="el-icon-arrow-right el-icon-right"></i>
+                    </el-button>
+                </el-button-group>
+            </el-col>
+            <el-col :span="4">
+                <el-button-group>
+                    <el-button :disabled="pageNumber===lastPage" @click="getPage(lastPage)" type="primary">
+                            Last Page: {{lastPage}}
+                    </el-button>
+                </el-button-group>
+            </el-col>
+            <el-col :span="2">
+                <el-input type="text" v-model="goToPage" placeholder="Page Number" ></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-button type="primary" v-on:click="getPage(goToPage)" round style="margin-left: 20px">Go</el-button>
+            </el-col>
+        </el-row>
+        
+        
+        
+        
+    </div>
+</body>
+
+</html>
