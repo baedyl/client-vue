@@ -19,3 +19,4 @@ Step 5: Make sure mongod is running or in another terminal start it up =>
 #               >mongod 
 Step 6: Using your web server publish the client-vue folder on your local machine, 
         if you are using Google Chrome web server you will probably get an URL like this one: http://127.0.0.1:port/
+ The page support all CRUD operations on the restaurant collection, dynamic pagination and the search of a restaurant using its name. We used the Element library for some of the inputs, the el-select and el-table tags did not worked so well so we sticked to pure HTML for those...
