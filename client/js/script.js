@@ -24,7 +24,7 @@ function init() {
                 label: '20'
               }
             ],
-            pageSize: 5,    // default to 10 elements per page
+            pageSize: 10,    // default to 10 elements per page
             modification: false, // Enable the modification button if == true
             ajout: true,        // Disable the adding button if == false
             rechercheInput: "",
