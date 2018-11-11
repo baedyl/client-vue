@@ -14,7 +14,7 @@ Step 3: Install the required Node modules =>
 #               >npm install
 Step 4: Start the server => 
 #               >node serverCrudWithMongo.js
-# We should get the following message in the terminal: "Serveur lancé sur le port : 8886"
+We should get the following message in the terminal: "Serveur lancé sur le port : 8886"
 Step 5: Make sure mongod is running or in another terminal start it up => 
 #               >mongod 
 Step 6: Using your web server publish the client-vue folder on your local machine, 
