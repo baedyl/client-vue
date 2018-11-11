@@ -38,3 +38,19 @@ table, td, th {
 .inputMargin{
     margin-bottom: 10px;
 }
+
+#wrapper{
+    position: relative;
+}
+#wrapper span {
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    padding: 10px;
+    background: rgba(255,255,255,.8);
+}
+
+#wrapper:hover span {
+    display: inline-block;
+}

@@ -18,18 +18,15 @@
     <div id="app">
         <el-row :gutter="20">
             <el-col :span="6">
-                <div class="grid-content bg-purple">
+                <div class="grid-content">
                     <fieldset>
                         <legend>Ajouter Restaurant:</legend>                   
                             <el-input type="text" name="id" v-model="id" disabled class="inputMargin"></el-input>
                         <form id="addForm">
                             <el-input type="text" name="nom" v-model="nom" placeholder="Nom Restaurant" class="inputMargin"></el-input>
                             <el-input type="text" name="cuisine" v-model="cuisine" placeholder="Cuisine Restaurant" class="inputMargin"></el-input>
-                            <!--<el-button type="primary" v-on:click="addRestaurant" :disabled="ajout !== true" plain class="inputMargin">Ajouter</el-button>-->
                             <el-button type="primary" icon="el-icon-plus" v-on:click="addRestaurant" :disabled="ajout !== true" circle plain class="inputMargin"></el-button>
-                            <!--<el-button type="primary" v-on:click="modifyRestaurant" :disabled="modification !== true" plain>Modifier</el-button>-->
                             <el-button type="primary" icon="el-icon-edit" v-on:click="modifyRestaurant" :disabled="modification !== true" circle plain></el-button>
-                            <!--<el-button type="primary" v-on:click="removeRestaurant" :disabled="modification !== true" plain>Supprimer</el-button>-->
                             <el-button type="danger" icon="el-icon-delete" v-on:click="removeRestaurant" :disabled="modification !== true" circle></el-button>
                             <el-button type="primary" icon="el-icon-refresh" v-on:click="clearInputs" circle plain></el-button>
                         </form>
@@ -46,7 +43,9 @@
                         <el-button type="primary" v-on:click="getRestaurant" plain>Rechercher</el-button>
                     </fieldset>     
                 </div>
-                <el-alert  v-if="alerte === true" title="" type="success" style="margin-top: 10%">{{alerte_msg}}
+                <el-alert  v-if="alerte_success === true" title="" type="success" style="margin-top: 10%">{{alerte_msg}}
+                </el-alert>
+                <el-alert  v-if="alerte_error === true" title="" type="error" style="margin-top: 10%">{{alerte_msg}}
                 </el-alert>
             </el-col>
             

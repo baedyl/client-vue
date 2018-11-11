@@ -11,24 +11,12 @@ function init() {
             pageNumber: 0,  // default to page 0 (first page)
             lastPage: 0,
             goToPage: "",
-            pageOptions: [{
-                value: '5',
-                label: '5',
-              }, 
-              {
-                value: '10',
-                label: '10'
-              }, 
-              {
-                value: '20',
-                label: '20'
-              }
-            ],
-            pageSize: 5,    // default to 10 elements per page
+            pageSize: 10,    // default to 10 elements per page
             modification: false, // Enable the modification button if == true
             ajout: true,        // Disable the adding button if == false
             rechercheInput: "",
-            alerte: false,  // Afficher un message de reussite après exécution d'une opération
+            alerte_success: false,  // Afficher un message de reussite après exécution d'une opération
+            alerte_error: false,
             alerte_msg: "",
 
         },
@@ -85,9 +73,30 @@ function init() {
                         console.log(err);
                 });
             },
+            // Activation de l'alerte success et desactivation de l'autre et vis versa
+            activateAlerte: function(success, msg){
+                if(success === true){
+                    this.alerte_error = false;
+                    this.alerte_success = true;
+                }else{
+                    this.alerte_error = true;
+                    this.alerte_success = false;
+                }
+                this.alerte_msg = msg;
+            },
+            // Vider les inputs du formulaire
+            clearInputs : function(){
+                this.id = "";
+                this.nom = "";
+                this.cuisine = "";
+            },
+            //  Disable the Edit and Delete buttons and activate the Create button
+            modificationFalse(){
+                this.modification = false;
+                this.ajout = true;
+            },
+            // Ajout d'un restaurant
             addRestaurant: function () {
-                this.restaurants.push({ name: this.nom, cuisine: this.cuisine});
-
                 console.log("Execution POST Request(addRestaurant)...");
                 event.preventDefault();
 
@@ -100,46 +109,30 @@ function init() {
                 if(this.nom){
                     let donneesFormulaire = formData;      
                     let url = "http://localhost:8886/api/restaurants";
-
                     this.doFetch(url, "POST", donneesFormulaire);
-                
-                    /*fetch(url, {
-                        method: "POST",
-                        body: donneesFormulaire
-                    })
-                    .then(function(responseJSON) {
-                        responseJSON.json()
-                            .then(function(res) {
-                                // Maintenant res est un vrai objet JavaScript
-                                console.log(res);
-                                this.alerte_msg = "Ajout Réussi!"
-                                this.alerte = true;
-                            });
-                        })
-                        .catch(function (err) {
-                            console.log(err);
-                    });*/
+
+                    // Nouvelle ligne dans la table HTML
+                    this.restaurants.push({ name: this.nom, cuisine: this.cuisine});
+
+                    // Activation de l'alerte success 
+                    this.activateAlerte(true, "Nouveau Restaurant ajouté!");
                 }else{
                     console.log("Empty Name of restaurant!");
-                }
 
+                    // Activation de l'alerte error
+                    this.activateAlerte(false, "Nom de restaurant vide!");                   
+                }
                 // Reset the input values
-                this.nom = "";
-                this.cuisine = "";
-                //                                                                                                                                                                                                                                                                                                                                                                                                                                                      this.alerte = false;
+                this.clearInputs();                                                                                                                                                                                                                                                                                                                                                                                                                                                  this.alerte = false;
                 
             },
             modifyRestaurant: function () {
-                //this.restaurants.push({ name: this.nom, cuisine: this.cuisine});
-                
-                console.log("Execution POST Request(modifyRestaurant)...");
-
+                console.log("Execution PUT Request(modifyRestaurant)...");
                 event.preventDefault();
 
                 var formData = new FormData(); // Currently empty
                 var addForm = document.getElementById('addForm');
                 formData = new FormData(addForm);
-                //console.log(addForm);
                 if(this.nom){
                     // Récupération des valeurs des champs du formulaire
                     // en prévision d'un envoi multipart en ajax/fetch
@@ -165,24 +158,20 @@ function init() {
                         // After the update we reload the page, so that the changes are visible
                         console.log("Reloading...");
                         this.getDataFromWebService();
-                        this.alerte_msg = "Modification Réussie!"
-                        this.alerte = true;
+
+                        // Activation de l'alerte success 
+                        this.activateAlerte(true, "Modification Restaurant Réussie!");
                     });
                 }else{
                     console.log("Empty Name of restaurant!");
+                    // Activation de l'alerte error
+                    this.activateAlerte(false, "Nom de restaurant vide!");
                 }
-                // Reset the input values
-                this.nom = "";
-                this.cuisine = "";
-                this.id = "";
-
-                this.modification = false;
-                this.ajout = true;
-                this.alerte = false;
+                // Reset the input values and deactivate the Edit button
+                this.clearInputs();     
+                this.modificationFalse();
             },
             removeRestaurant: function (index) {
-                //console.log(index)
-                //this.restaurants.splice(index, 1);
                 console.log("Execution DELETE Request(removeRestaurant)...");
 
                 event.preventDefault();
@@ -190,7 +179,6 @@ function init() {
                 var formData = new FormData(); // Currently empty
                 var addForm = document.getElementById('addForm');
                 formData = new FormData(addForm);
-                //console.log(addForm);
                 if(this.id){
                     // Récupération des valeurs des champs du formulaire
                     // en prévision d'un envoi multipart en ajax/fetch
@@ -214,17 +202,18 @@ function init() {
                         // After the update we reload the page, so that the changes are visible
                         console.log("Reloading...");
                         this.getDataFromWebService();
+
+                        // Activation de l'alerte success 
+                        this.activateAlerte(true, "Suppression Restaurant Réussie!");
                     });
                 }else{
                     console.log("Empty Id of restaurant!");
+                    // Activation de l'alerte error 
+                    this.activateAlerte(false, "Id du restaurant vide!");
                 }
-                // Reset the input values
-                this.nom = "";
-                this.cuisine = "";
-                this.id = "";
-
-                this.modification = false;
-                this.ajout = true;
+                // Reset the input values and deactivate the Edit, Delete button
+                this.clearInputs();
+                this.modificationFalse();
             },
             getColor: function (index) {
                 return (index % 2) ? 'red' : 'green';
@@ -237,14 +226,15 @@ function init() {
                  if(this.pageNumber >= 1){
                     this.pageNumber--;
                     this.getDataFromWebService();
-                 }
-               
+                 }             
             },
-            getPage(val){   // return a page based on the value of the page number
+            // Return a page based on the value of the page number
+            getPage(val){   
                 this.pageNumber = val;
                 this.getDataFromWebService();
             },
-            getLastPage(){  // Divide the number of documents by the pageSize
+            // Divide the number of documents by the pageSize
+            getLastPage(){  
                 let url = "http://localhost:8886/api/restaurants/count";
 
                 fetch(url).then((data) => {
@@ -271,7 +261,6 @@ function init() {
                     nomResto = this.rechercheInput;
                     this.rechercheInput = "";
                 }
-
                 console.log(nomResto);
                 
                 let url = "http://localhost:8886/api/restaurants/search/" + nomResto;
@@ -291,14 +280,7 @@ function init() {
                     this.ajout = false;           
                 });
             },
-            clearInputs : function(){
-                this.modification = false;
-                this.ajout = true;
-
-                this.id = "";
-                this.nom = "";
-                this.cuisine = "";
-            }
+            
         }
     })
 }
