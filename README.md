@@ -1,5 +1,5 @@
 # client-vue
-How to use this client in Vue JS:
+How to use this client in Vue.Js:
 
 Requirements: A recent version  of Node JS, MongoDB, a Web Server and Internet connection!
 
